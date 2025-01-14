@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 using DotNetRPG.API.Data;
 using DotNetRPG.API.Services.CharacterService;
 using Swashbuckle.AspNetCore.Filters;
+using System;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 

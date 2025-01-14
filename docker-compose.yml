@@ -36,6 +36,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${PASSWORD_CREDENTIAL}
+      - ConnectionStrings__DefaultConnection=Host=rpg-db;Port=5434;Database=dotnet-rpg-db;username=admin;password=adminpassword
     volumes:
       # - ~/.aspnet/https:/https:ro
       - ./https:/https:ro
