@@ -5,9 +5,26 @@
   - `dotnet dev-certs https -ep .\https\aspnetcore.pfx -p <PASSWORD_CREDENTIAL>`
   - `dotnet dev-certs https --trust`
 - Note: Change `<PASSWORD_CREDENTIAL>` to the creds provided in the env.example file
-
+- Run the following command to trust the created certificate:
+  - `dotnet dev-certs https --trust`
+- Rename `.env.example` to `.env`
+- Run `docker compose up --build -d`
+  
 **SETUP HTTPS CERTIFICATE FOR DOCKER ON UBUNTU**
 ---
+### For DotNet v9 and higher
+- Navigate to the root folder
+- Open the terminal and run the following command
+  - `mkdir https`
+  - `dotnet dev-certs https -ep https/aspnetcore.pfx -p <PASSWORD_CREDENTIAL>`
+  - `dotnet dev-certs https --trust`
+- Note: Change `<PASSWORD_CREDENTIAL>` to the creds provided in the env.example file
+- Run the following command to trust the created certificate:
+  - `dotnet dev-certs https --trust`
+- Rename `.env.example` to `.env`
+- Run `docker compose up --build -d`
+  
+### For DotNet v8 or lower
 - Navigate to the root folder
 - Open the terminal
 - Create https folder by running `mkdir https`
@@ -20,10 +37,10 @@
   - This will ask for a password. You can either create your own password and set it up on the .env file or use the existing password on the .env.example file on this project.
   - Note: You can delete the aspnetcore.key and aspnetcore.crt file on this folder after creating aspnetcore.pfx
 - Navigate back by running `cd ..`
-- Run the following command to trust the createda certificate:
+- Run the following command to trust the created certificate:
   - `dotnet dev-certs https --trust`
+- Rename `.env.example` to `.env`
 - Run `docker compose up --build -d`
-  - Note: if the docker compose build fails due to missing env file. Go to root folder of this project and change the name of env.example to .env.
  
 **Database Migration with Entity Framework**
 ---
