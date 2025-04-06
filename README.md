@@ -44,6 +44,7 @@
  
 **Database Migration with Entity Framework**
 ---
+- Install dotnet ef by running: `dotnet tool install --global dotnet-ef`
 - From the root folder of this project. Navigate to apps/api/DotNetRPG.API
 - Go to the terminal and run `dotnet ef database update`
 
