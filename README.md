@@ -2,7 +2,7 @@
 ---
 - Navigate to the root folder
 - Open the terminal and run the following command
-  - `dotnet dev-certs https -ep .\https\aspnetcore.pfx -p <PASSWORD_CREDENTIAL>`
+  - `dotnet dev-certs https -ep https\aspnetcore.pfx -p <PASSWORD_CREDENTIAL>`
   - `dotnet dev-certs https --trust`
 - Note: Change `<PASSWORD_CREDENTIAL>` to the creds provided in the env.example file
 - Run the following command to trust the created certificate:
