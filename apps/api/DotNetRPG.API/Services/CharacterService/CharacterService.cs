@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using DotNetRPG.API.Data;
 using DotNetRPG.API.Dtos.Character;
 
@@ -27,11 +22,6 @@ namespace DotNetRPG.API.Services.CharacterService
 
         public ServiceResponse<List<GetCharacterDtoResponse>> GetAllCharacters()
         {
-            // throw new NotImplementedException();
-            // return new ServiceResponse<List<GetCharacterDto>> { 
-            //     Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList()
-            // };
-
             var response = new ServiceResponse<List<GetCharacterDtoResponse>>();
 
             try
@@ -56,7 +46,6 @@ namespace DotNetRPG.API.Services.CharacterService
 
         public ServiceResponse<GetCharacterDtoResponse> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest)
         {
-            // throw new NotImplementedException();
             var serviceResponse = new ServiceResponse<GetCharacterDtoResponse>();
 
             try
@@ -82,14 +71,6 @@ namespace DotNetRPG.API.Services.CharacterService
 
         public ServiceResponse<List<GetCharacterDtoResponse>> AddCharacter(AddCharacterDtoRequest newCharacter)
         {
-            // throw new NotImplementedException();
-            // var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            // Character character = _mapper.Map<Character>(newCharacter);
-            // character.Id = characters.Max(c => c.Id) + 1;
-            // characters.Add(character);
-            // serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
-            // return serviceResponse;
-
             var serviceResponse = new ServiceResponse<List<GetCharacterDtoResponse>>();
 
             try

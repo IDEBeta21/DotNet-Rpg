@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DotNetRPG.API.Data;
 using DotNetRPG.API.Dtos.User;
-using DotNetRPG.API.Models;
 
 namespace DotNetRPG.API.Controllers
 {
