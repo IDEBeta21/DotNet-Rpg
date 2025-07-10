@@ -16,7 +16,7 @@ builder.Services.AddDbContext<RpgDataContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(config => {
+builder.Services.AddSwaggerGen(config => { //add bearer auth to swagger
     config.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme {
         Description = "Standard Authorization header usimg the Bearer scheme, e.g. \"bearer {token}\"",
         In = ParameterLocation.Header,
@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen(config => {
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) // integrate bearer auth
     .AddJwtBearer(options => {
         options.TokenValidationParameters = new TokenValidationParameters
         {

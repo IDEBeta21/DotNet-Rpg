@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DotNetRPG.API.Dtos.Character;
 
 namespace DotNetRPG.API.Services.CharacterService

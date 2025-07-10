@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DotNetRPG.API.Dtos.Character;
 using DotNetRPG.API.Services.CharacterService;
-using DotNetRPG.API.Models;
 
 namespace DotNetRPG.API.Controllers
 {
