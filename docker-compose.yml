@@ -6,45 +6,44 @@ networks:
 services:
   # Postgres database image
   dotnet-rpg-db:
-    image: postgres:latest
+    image: postgres:17
     container_name: rpg-db
     restart: always
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      PGPORT: ${DATABASE_PORT}
+      # PGPORT: ${DATABASE_PORT}
     ports:
-      - "5434:5434"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - local
-  
 
   #Dotnet RPG environment
-  dotnet-rpg-api:
-    image: dotnet-rpg
-    container_name: dotnet-rpg-api
-    build:
-      context: .
-      dockerfile: apps/api/DotNetRPG.API/Dockerfile
-    ports:
-      - "5000:5000"
-      - "5001:5001"
-    environment:
-      - ASPNETCORE_URLS=https://+:5001;http://+:5000
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=${PASSWORD_CREDENTIAL}
-      - ConnectionStrings__DefaultConnection=Host=rpg-db;Port=5434;Database=dotnet-rpg-db;username=admin;password=adminpassword
-    volumes:
-      # - ~/.aspnet/https:/https:ro
-      - ./https:/https:ro
-    networks:
-      - local
-    depends_on:
-      - dotnet-rpg-db
+  # dotnet-rpg-api:
+  #   image: dotnet-rpg
+  #   container_name: dotnet-rpg-api
+  #   build:
+  #     context: .
+  #     dockerfile: apps/api/DotNetRPG.API/Dockerfile
+  #   ports:
+  #     - "5000:5000"
+  #     - "5001:5001"
+  #   environment:
+  #     - ASPNETCORE_URLS=https://+:5001;http://+:5000
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore.pfx
+  #     - ASPNETCORE_Kestrel__Certificates__Default__Password=${PASSWORD_CREDENTIAL}
+  #     - ConnectionStrings__DefaultConnection=Host=rpg-db;Port=5434;Database=dotnet-rpg-db;username=admin;password=adminpassword
+  #   volumes:
+  #     # - ~/.aspnet/https:/https:ro
+  #     - ./https:/https:ro
+  #   networks:
+  #     - local
+  #   depends_on:
+  #     - dotnet-rpg-db
 
 volumes:
   postgres_data:
