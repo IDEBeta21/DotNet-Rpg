@@ -71,7 +71,7 @@ namespace DotNetRPG.API.Services.CharacterService
 
         public ServiceResponse<List<GetCharacterDtoResponse>> AddCharacter(AddCharacterDtoRequest newCharacter)
         {
-            var serviceResponse = new ServiceResponse<List<GetCharacterDtoResponse>>();
+            var serviceResponse = new ServiceResponse<List<GetCharacterDtoResponse>>(); 
 
             try
             {
