@@ -1,55 +1,218 @@
-**SETUP HTTPS CERTIFICATE FOR DOCKER ON WINDOWS**
----
-- Navigate to the root folder
-- Open the terminal and run the following command
-  - `dotnet dev-certs https -ep https\aspnetcore.pfx -p <PASSWORD_CREDENTIAL>`
-  - `dotnet dev-certs https --trust`
-- Note: Change `<PASSWORD_CREDENTIAL>` to the creds provided in the env.example file
-- Run the following command to trust the created certificate:
-  - `dotnet dev-certs https --trust`
-- Rename `.env.example` to `.env`
-- Run `docker compose up --build -d`
-  
-**SETUP HTTPS CERTIFICATE FOR DOCKER ON UBUNTU**
----
-### For DotNet v9 and higher
-- Navigate to the root folder
-- Open the terminal and run the following command
-  - `mkdir https`
-  - `dotnet dev-certs https -ep https/aspnetcore.pfx -p <PASSWORD_CREDENTIAL>`
-  - `dotnet dev-certs https --trust`
-- Note: Change `<PASSWORD_CREDENTIAL>` to the creds provided in the env.example file
-- Run the following command to trust the created certificate:
-  - `dotnet dev-certs https --trust`
-- Rename `.env.example` to `.env`
-- Run `docker compose up --build -d`
-  
-### For DotNet v8 or lower
-- Navigate to the root folder
-- Open the terminal
-- Create https folder by running `mkdir https`
-- Navigate to the created folder with `cd https`
-- Create or Obtain an SSL CertificateCreate or Obtain an SSL Certificate
-  - Run this command to generate a .crt and .key file:
-    - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout aspnetcore.key -out aspnetcore.crt -subj "/CN=localhost"`
-  - To create a .pfx file, run the following command
-    - `openssl pkcs12 -export -out aspnetcore.pfx -inkey aspnetcore.key -in aspnetcore.crt`
-  - This will ask for a password. You can either create your own password and set it up on the .env file or use the existing password on the .env.example file on this project.
-  - Note: You can delete the aspnetcore.key and aspnetcore.crt file on this folder after creating aspnetcore.pfx
-- Navigate back by running `cd ..`
-- Run the following command to trust the created certificate:
-  - `dotnet dev-certs https --trust`
-- Rename `.env.example` to `.env`
-- Run `docker compose up --build -d`
- 
-**Database Migration with Entity Framework**
----
-- Install dotnet ef by running: `dotnet tool install --global dotnet-ef`
-- From the root folder of this project. Navigate to apps/api/DotNetRPG.API
-- Go to the terminal and run `dotnet ef database update`
+# DotNet RPG API
 
-**Note**
----
-This project is created to further enhance my knowledge in webapi development with dotnet framework and docker while using linux. This project is not going to be perfect since its just going to be use for practicing. I also want to use this project as a reference for when I encounter scenarios that are similar to what I'm currently doing. 
+An ASP.NET Core 8 Web API for managing RPG characters with JWT authentication. Built as an educational project for learning WebAPI development with .NET and Docker on Linux.
 
-PS: You are also free to use this project for practicing and/or reference. 
+---
+
+## Features
+
+- JWT-based user authentication (register & login)
+- Character CRUD operations scoped per authenticated user
+- PostgreSQL database with Entity Framework Core
+- AutoMapper for DTO mapping
+- Swagger / OpenAPI documentation UI
+- Docker Compose setup (API + PostgreSQL containers)
+- HTTPS support with SSL certificates
+- Unit tests with xUnit, Moq, and FluentAssertions
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | ASP.NET Core 8.0 |
+| Language | C# / .NET 8.0 |
+| Database | PostgreSQL (Npgsql EF Core 8.0.4) |
+| ORM | Entity Framework Core 8.0.8 |
+| Authentication | JWT Bearer 8.0.8 |
+| Object Mapping | AutoMapper 12.0.1 |
+| API Docs | Swashbuckle (Swagger) 6.7.3 |
+| Testing | xUnit 2.9.0, Moq 4.20.70, FluentAssertions 6.12.0 |
+| Containerization | Docker + Docker Compose |
+
+---
+
+## Project Structure
+
+```
+DotNet-Rpg/
+├── apps/
+│   └── api/
+│       ├── DotNetRPG.API/
+│       │   ├── Controllers/        # AuthController, CharacterController, HealthCheckController
+│       │   ├── Data/               # DbContext, AuthRepository
+│       │   ├── Models/
+│       │   │   ├── Dtos/           # Request/response DTOs
+│       │   │   ├── Character.cs
+│       │   │   ├── User.cs
+│       │   │   └── RpgClass.cs     # Character class enum
+│       │   ├── Services/
+│       │   │   └── CharacterService/
+│       │   ├── Migrations/
+│       │   ├── Program.cs
+│       │   └── Dockerfile
+│       ├── DotNetRPG.UnitTests/
+│       └── DotNetRPGServices.sln
+├── https/                          # SSL certificates (git-ignored)
+├── docker-compose.yml
+├── .env.example
+└── README.md
+```
+
+---
+
+## Prerequisites
+
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Docker](https://www.docker.com/) and Docker Compose
+- OpenSSL — required on Linux with .NET 8 for certificate generation
+
+---
+
+## Getting Started
+
+### 1. Environment Setup
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` if you need to change database credentials or the certificate password.
+
+### 2. HTTPS Certificate Setup
+
+#### Windows
+
+```bash
+dotnet dev-certs https -ep https\aspnetcore.pfx -p <PASSWORD_CREDENTIAL>
+dotnet dev-certs https --trust
+```
+
+#### Ubuntu / Linux — .NET 9 and higher
+
+```bash
+mkdir https
+dotnet dev-certs https -ep https/aspnetcore.pfx -p <PASSWORD_CREDENTIAL>
+dotnet dev-certs https --trust
+```
+
+#### Ubuntu / Linux — .NET 8 or lower
+
+```bash
+mkdir https && cd https
+
+# Generate certificate files
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout aspnetcore.key -out aspnetcore.crt \
+  -subj "/CN=localhost"
+
+# Convert to .pfx (you will be prompted for a password)
+openssl pkcs12 -export -out aspnetcore.pfx \
+  -inkey aspnetcore.key -in aspnetcore.crt
+
+# Optional: remove intermediate files
+rm aspnetcore.key aspnetcore.crt
+
+cd ..
+dotnet dev-certs https --trust
+```
+
+> **Note:** Use the password defined in your `.env` file (see `PASSWORD_CREDENTIAL` in `.env.example`).
+
+### 3. Run with Docker
+
+```bash
+docker compose up --build -d
+```
+
+This starts two containers:
+- `dotnet-rpg-api` — ASP.NET Core API on ports 5000 (HTTP) and 5001 (HTTPS)
+- `dotnet-rpg-db` — PostgreSQL on port 5434
+
+### 4. Run Locally (without Docker)
+
+Ensure a PostgreSQL instance is running and your connection string in `appsettings.Development.json` is correct, then:
+
+```bash
+cd apps/api
+
+# Apply migrations
+dotnet ef database update --project DotNetRPG.API
+
+# Start the API
+dotnet run --project DotNetRPG.API
+```
+
+---
+
+## API Reference
+
+### Auth
+
+| Method | Endpoint | Auth Required | Description |
+|--------|----------|:---:|-------------|
+| `POST` | `/auth/Register` | No | Register a new user |
+| `POST` | `/auth/Login` | No | Login and receive a JWT token |
+
+### Characters
+
+| Method | Endpoint | Auth Required | Description |
+|--------|----------|:---:|-------------|
+| `GET` | `/api/character/GetAllCharacters` | JWT | Get all characters for the current user |
+| `POST` | `/api/character/GetCharacterById` | JWT | Get a single character by ID |
+| `POST` | `/api/character/AddCharacter` | JWT | Create a new character |
+| `PUT` | `/api/character/UpdateCharacter` | JWT | Update an existing character |
+| `DELETE` | `/api/character/DeleteCharacterById` | JWT | Delete a character |
+
+### Health Check
+
+| Method | Endpoint | Auth Required | Description |
+|--------|----------|:---:|-------------|
+| `GET` | `/api/healthcheck/dbcheck` | No | Verify database connectivity |
+
+---
+
+## Swagger UI
+
+Once the API is running, open the interactive docs at:
+
+```
+https://localhost:5001/swagger
+```
+
+Use the **Authorize** button to provide your JWT token before testing protected endpoints.
+
+---
+
+## Running Tests
+
+```bash
+cd apps/api/DotNetRPG.UnitTests
+dotnet test
+```
+
+---
+
+## Database Migrations
+
+Install the EF Core CLI tool if you haven't already:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+Apply migrations:
+
+```bash
+cd apps/api
+dotnet ef database update --project DotNetRPG.API
+```
+
+---
+
+## Notes
+
+This project was created to enhance my knowledge in WebAPI development with .NET and Docker on Linux. It serves as both a learning exercise and a personal reference for common patterns and scenarios in .NET API development.
+
+Feel free to use it as a reference or starting point for your own projects.
